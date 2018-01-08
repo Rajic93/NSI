@@ -1,7 +1,10 @@
 .header {
-  background: #eee url('../../header-bk.png') center;
   background-size: cover;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 0.2em solid #b84334;
+  background-size: cover;
+  background-color: #413d40;
+  max-height: 15vh;
+  height: 15vh;
 }
 
 .content {
@@ -58,6 +61,14 @@
 
 .selected {
   border-bottom: 1px solid #fff;
+}
+
+.button {
+  width: 2.5em;
+  height: 2.5em;
+  float: right;
+  margin: 1em;
+  background-color: #03A9F4;
 }
 
 @media (max-width: 767px){

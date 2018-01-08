@@ -9,6 +9,8 @@ import Helmet from 'react-helmet';
 import DevTools from './components/DevTools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Instagram from "../Instagram/Instagram";
+import ContentContainer from "../App/components/Content/Content"
 
 // Import Actions
 import { toggleAddPost } from './AppActions';
@@ -28,10 +30,24 @@ export class App extends Component {
     this.props.dispatch(toggleAddPost());
   };
 
+  redirectPage() {
+    if (!this.props.redirected)
+      return;
+    console.log('check');
+    document.innerHTML = this.props.redirectPage;
+    return;
+
+
+    let div = document.getElementById('login');
+    div.innerHTML = this.props.redirectPage;
+  }
+
   render() {
+    let x = this.redirectPage();
+    let devOn = false;
     return (
       <div>
-        {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
+        { (devOn)? this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools /> : "" }
         <div>
           <Helmet
             title="MERN Starter - Blog App"
@@ -46,17 +62,23 @@ export class App extends Component {
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1',
               },
-            ]}
+            ]} 
           />
           <Header
             switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
             intl={this.props.intl}
             toggleAddPost={this.toggleAddPostSection}
           />
+          {/* 
           <div className={styles.container}>
             {this.props.children}
           </div>
           <Footer />
+          <Instagram /> */}
+          <ContentContainer />
+          <div id='login'>
+
+          </div>
         </div>
       </div>
     );
@@ -73,6 +95,8 @@ App.propTypes = {
 function mapStateToProps(store) {
   return {
     intl: store.intl,
+    redirected: store.redirected,
+    redirectPage: store.redirectPage
   };
 }
 

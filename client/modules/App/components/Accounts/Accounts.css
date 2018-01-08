@@ -1,0 +1,52 @@
+.filters {
+    width: 100%;
+    /* background-color: antiquewhite; */
+    text-align: center;
+    margin-left: 1em;
+}
+
+.selected {
+    border-bottom: 2px solid #b84334;
+}
+
+.selected-twitter {
+    border-bottom: 2px solid deepskyblue;
+}
+
+.selected-facebook {
+    border-bottom: 2px solid blue;
+}
+
+.selected-instagram {
+    border-bottom: 2px solid darkorchid;
+}
+
+.selected-google {
+    border-bottom: 2px solid red;
+}
+
+.selected-snapchat {
+    border-bottom: 2px solid gold;
+}
+
+ul {
+    list-style: none;
+}
+
+.filters ul li {
+    width: 100%;
+    border-bottom: 1px solid grey;
+    height: 5vh;
+}
+
+img {
+    cursor: pointer;
+}
+
+span {
+    cursor: pointer;
+}
+
+.add {
+    cursor: pointer;
+}

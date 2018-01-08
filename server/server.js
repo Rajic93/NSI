@@ -33,7 +33,8 @@ import Helmet from 'react-helmet';
 import routes from '../client/routes';
 import { fetchComponentData } from './util/fetchData';
 import posts from './routes/post.routes';
-import dummyData from './dummyData';
+import insta from './routes/instagram.routes';
+import user from './routes/users.routes';
 import serverConfig from './config';
 
 // Set native promises as mongoose promise
@@ -47,7 +48,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
   }
 
   // feed some dummy data in DB.
-  dummyData();
+  //dummyData();
 });
 
 // Apply body Parser and server public assets and routes
@@ -56,6 +57,8 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../dist/client')));
 app.use('/api', posts);
+app.use('/inst', insta);
+app.use('/user', user);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -78,7 +81,10 @@ const renderFullPage = (html, initialState) => {
         ${process.env.NODE_ENV === 'production' ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
-      </head>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        
+        </head>
       <body>
         <div id="root">${html}</div>
         <script>

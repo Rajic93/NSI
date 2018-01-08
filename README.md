@@ -253,3 +253,8 @@ This warning is visible only on development and totally harmless. This occurs to
 
 ## License
 MERN is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+
+## Implementirano
+
+- login, register i connect se nalaze u users.js fajlovima
+    - connect kao zadnji parametar prima callback funkciju kroz koju vraca status operacije. Kodove sam lupao tkd jedino je 200 ok, ostale zanemari za sada. Kroz ovu rutu cemo da dodajemo sve naloge. Za svoj deo imas facebook.js, facebook.routes.js i facebook.controller.js fajlove na serveru i na klijentu imas sve potrebne fajlove u modules/App/Facebook folderu. 

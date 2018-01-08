@@ -6,9 +6,14 @@ import { FormattedMessage } from 'react-intl';
 import styles from './Header.css';
 
 export function Header(props, context) {
+
   const languageNodes = props.intl.enabledLanguages.map(
     lang => <li key={lang} onClick={() => props.switchLanguage(lang)} className={lang === props.intl.locale ? styles.selected : ''}>{lang}</li>
   );
+
+  const login = () => {
+
+  };
 
   return (
     <div className={styles.header}>
@@ -18,16 +23,7 @@ export function Header(props, context) {
           {languageNodes}
         </ul>
       </div>
-      <div className={styles.content}>
-        <h1 className={styles['site-title']}>
-          <Link to="/" ><FormattedMessage id="siteTitle" /></Link>
-        </h1>
-        {
-          context.router.isActive('/', true)
-            ? <a className={styles['add-post-button']} href="#" onClick={props.toggleAddPost}><FormattedMessage id="addPost" /></a>
-            : null
-        }
-      </div>
+      <button id="login" onClick={login()} className={styles.button}/>
     </div>
   );
 }
