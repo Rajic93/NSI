@@ -3,14 +3,23 @@ import * as InstaModel from "../models/Instagram";
 import * as UsersModel from './users.controller';
 
 
-
+/**
+ * The first step in two factor authentication.
+ * @param {request object} req 
+ * @param {response object} res 
+ */
 export function login(req, res) {
     InstaModel.redirect(res);
 };
 
-// Redirect to recieve code in order to get OAuth token
+/**
+ * The second step in two factor authentication.
+ * Redirect to receive code in order to get OAuth token.
+ * @param {request object} req 
+ * @param {response object} res 
+ */
 export function redirect(req, res) {
-
+    console.log('redirected');
     //no errors
     let code = req.query.code;
     InstaModel.authenticate(code, (data) => {
@@ -30,9 +39,27 @@ export function redirect(req, res) {
                     break;              
                 default:
                     res.status(200);
-                    res.redirect("http://localhost:10000");
+                    res.redirect("http://localhost:10000/feed");
                     break;
             }
         });
     });
 };
+
+
+/**
+ * Get all posted media of the connected user.
+ * @param {request object} req 
+ * @param {response object} res 
+ */
+export function getFeed(req, res) {
+
+    let id = req.headers.cookie;
+    console.log(id.split("=")[1]);
+    // UsersModel.
+
+    // InstaModel.feed(req.query.id, (data) => {
+    //     res.send(data);
+    //     res.end();
+    // });
+}

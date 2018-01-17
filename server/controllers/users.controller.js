@@ -12,16 +12,18 @@ export function login(req, res) {
     'signingEmail': email
   },(err, data) => {
 
+    console.log('0');
     if (err){
       res.status(400).end();
       return;
     }
-
+console.log('1');
     if (data == null) {
       res.status(300).send("data does not exist.");
       res.end();
       return;
     }
+    console.log('2');
 
     bcrypt.compare(password, data.signingHashedPassword, (err, result) => {
 
@@ -29,6 +31,7 @@ export function login(req, res) {
         res.status(400).end();
         return;
       }
+      console.log('3');
 
       let response = {
         id: data._id,

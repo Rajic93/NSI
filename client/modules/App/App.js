@@ -71,7 +71,7 @@ export class App extends Component {
           />
             {this.props.children}
           <div id='login' className='popup-login'>
-              s
+              
           </div>
         </div>
       </div>

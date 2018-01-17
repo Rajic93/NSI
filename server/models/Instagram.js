@@ -7,7 +7,7 @@ const _INSTA_URL_ = `https://api.instagram.com/oauth/authorize/?client_id=${conf
                     `&scope=public_content+follower_list+comments+relationships+likes`;
 
 export function redirect(res) {
-    res.send(_INSTA_URL_);
+    res.redirect(_INSTA_URL_);
 }
 
 export function authenticate(code, callback) {
@@ -25,3 +25,17 @@ export function authenticate(code, callback) {
         callback(err)
     });
 };
+
+export function feed(access_token, callback) {
+    let url = `https://api.instagram.com/v1/users/self/media/recent/?access_token=${access_token}`;
+    console.log(url);
+    axios.get(url)
+    .then((data) => {
+        console.log("response data");
+        console.log(data);
+        callback(JSON.stringify(data));
+    })
+    .catch((error) => {
+        callback(error);
+    });
+}

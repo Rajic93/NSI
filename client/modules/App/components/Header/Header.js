@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
+import axios from "axios";
 
 // Import Style
 import styles from './Header.css';
@@ -12,7 +13,14 @@ export function Header(props, context) {
   );
 
   const login = () => {
-
+    // axios.get('http://localhost:10000/inst/feed')
+    // .then((res) => {
+    //   console.log(res.data);
+    // })
+    // .catch((error) => {
+    //   console.error(error);
+      
+    // })
   };
 
   return (

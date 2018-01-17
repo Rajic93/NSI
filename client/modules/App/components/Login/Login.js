@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { connect } from "react-redux";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
+import axios from "axios";
 
 var styleDiv = {
     marginTop: "20vh",
@@ -55,16 +56,18 @@ class Login extends React.Component {
         this.props = props;
     }
 
-    logedIn(response) {
-        
-    }
-
     login() {
-        
-    }
-
-    joinNow() {
-
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        axios.post('http://localhost:10000/user/login', {
+            email,
+            password
+        }).then((response) => {
+            document.cookie = "id=" + response.data.id;
+            browserHistory.push("http://localhost:10000/feed/")
+        }).catch((error) => {
+            alert(error);
+        })
     }
 
     render() {
@@ -75,16 +78,14 @@ class Login extends React.Component {
                     <br/>
                     <input type="password" placeholder="password" id="password" style={styleInput}/>
                     <br/>
-                    <Link to="/feed">
-                        <input type="button" className="btn btn-success" value="Login" name="login" onClick={this.login.bind(this)} style={styleButton}/>
-                    </Link>
+                    <input type="button" className="btn btn-success" value="Login" name="login" onClick={this.login.bind(this)} style={styleButton}/>
                     <a href="#">
                         <p  style={styleForgot}>
                             Forgot password?
                         </p>
                     </a>
                     <Link to="/register">
-                        <input type="button" className="btn btn-primary" value="Join now" onClick={this.joinNow.bind(this)} style={styleJoin}/>
+                        <input type="button" className="btn btn-primary" value="Join now" style={styleJoin}/>
                     </Link>
                 </div>
             </div>
