@@ -16,6 +16,8 @@ import ContentContainer from "../App/components/Content/Content"
 import { toggleAddPost } from './AppActions';
 import { switchLanguage } from '../../modules/Intl/IntlActions';
 
+import { Link } from "react-router";
+
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -62,17 +64,21 @@ export class App extends Component {
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1',
               },
-            ]} 
+            ]}
           />
           <Header
             switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
             intl={this.props.intl}
             toggleAddPost={this.toggleAddPostSection}
           />
-            {this.props.children}
+          {this.props.children}
           <div id='login' className='popup-login'>
-              s
+            s
           </div>
+          <div> Routes </div>
+          <Link to="/">  Home  </Link>
+          <Link to="/facebook">  Connect to facebook  </Link>
+          <Link to="/register">  Register  </Link>
         </div>
       </div>
     );
