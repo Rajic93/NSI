@@ -4,9 +4,11 @@ import * as UsersController from './users.controller';
 
 
 export function login(req, res) {
-  let userShortLivedToken = req.query.userShortLivedToken;
+  let userShortLivedToken = req.body.userShortLivedToken;
 
-  FacebookModel.getUserLongLivedToken(userShortLivedToken, (data) => {
+  FacebookModel.generateUserLongLivedToken(userShortLivedToken, (data) => {
+   // console.log("Short token" + userShortLivedToken);
+   // console.log(data);
     res.status(200).send(data);
   });
 }

@@ -2,7 +2,7 @@ import config from '../config';
 import axios from 'axios';
 import querystring from 'querystring';
 
-export function getUserLongLivedToken(shortLivedToken, callback) {
+export function generateUserLongLivedToken(shortLivedToken, callback) {
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     axios.post('https://graph.facebook.com/oauth/access_token', querystring.stringify({
         grant_type: "fb_exchange_token",
