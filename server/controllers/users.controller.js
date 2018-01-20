@@ -127,3 +127,27 @@ export function connect(id, account, accType, cb) {
     cb(200);
   });
 }
+
+export function getInstaCode(id, callback) {
+
+  
+  model.findOne({
+      _id: id
+  }, (error, data) => {
+
+      if (error) {
+          callback(true);
+      }
+
+      if (data === undefined) {
+          callback()
+      }
+      let access_token = data.connectedAccounts.find((account) => {
+        
+          return account[0].type === 'instagram';
+      })[0].account.access_token;
+      
+      access_token = '2926861514.66594bf.016ee67e3cb142b2aed1ee054fb21865';
+      callback(undefined, access_token);
+  })
+}

@@ -1,9 +1,26 @@
 // Export Constants
-export const TOGGLE_ADD_POST = 'TOGGLE_ADD_POST';
+export const ADD_ACCOUNT = 'ADD_ACCOUNT';
+export const ADD_POST = 'ADD_POST';
+export const UPDATE_CONTENT = 'UPDATE_CONTENT';
 
 // Export Actions
-export function toggleAddPost() {
+export function addAccount(account) {
   return {
-    type: TOGGLE_ADD_POST,
+    type: ADD_ACCOUNT,
+    payload: account
+  };
+}
+
+export function addPost(post) {
+  return {
+    type: ADD_POST,
+    payload: post
+  };
+}
+
+export function updateContent(content) {
+  return {
+    type: UPDATE_CONTENT,
+    payload: content
   };
 }

@@ -27,15 +27,42 @@ export function authenticate(code, callback) {
 };
 
 export function feed(access_token, callback) {
+
     let url = `https://api.instagram.com/v1/users/self/media/recent/?access_token=${access_token}`;
-    console.log(url);
     axios.get(url)
     .then((data) => {
-        console.log("response data");
-        console.log(data);
-        callback(JSON.stringify(data));
+        callback(data);
     })
     .catch((error) => {
         callback(error);
     });
 }
+
+export function like(mediaId, access_token, callback) {
+
+    let url = `https://api.instagram.com/v1/media/${mediaId}/likes`;    
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    axios.post(url, querystring.stringify({
+        access_token: access_token
+    }))
+    .then((data) => {
+        console.log(2);
+        callback(undefined, 200);
+    }).catch((error) => {
+        console.log(3);
+        callback(error)
+    });
+}
+
+export function dislike(mediaId, access_token, callback) {
+
+    let url = `https://api.instagram.com/v1/media/${mediaId}/likes?access_token=${access_token}`;
+    axios.delete(url)
+    .then((data) => {
+        callback(200);
+    }).catch((error) => {
+
+    });
+
+}
+

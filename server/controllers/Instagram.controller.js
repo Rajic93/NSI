@@ -1,6 +1,5 @@
-import Instagram from '../models/Instagram';
 import * as InstaModel from "../models/Instagram";
-import * as UsersModel from './users.controller';
+import * as UsersController from './users.controller';
 
 
 /**
@@ -26,7 +25,7 @@ export function redirect(req, res) {
         
         //hardcode id for now
         let id = "5a521813d0a6e9dcecf89907";
-        UsersModel.connect(id, data, 'instagram', (status) => {
+        UsersController.connect(id, data, 'instagram', (status) => {
             
             switch (status) {
                 case 500:
@@ -54,12 +53,91 @@ export function redirect(req, res) {
  */
 export function getFeed(req, res) {
 
-    let id = req.headers.cookie;
-    console.log(id.split("=")[1]);
-    // UsersModel.
+    let id = req.headers.cookie.split(';').find((element) => {
+        let name = element.split('=')[0];
+        if (name[0] === ' ')
+            name = name.substring(1);
+        return name === 'id';
+    }).split('=')[1];
 
-    // InstaModel.feed(req.query.id, (data) => {
-    //     res.send(data);
-    //     res.end();
-    // });
+    UsersController.getInstaCode(id, (error, access_token) => {
+    
+        if (error) {
+            res.send(error);
+            res.end();
+        }
+        
+        if (access_token === undefined) {
+            res.status(404).send('No user with specified id.');
+            res.end();
+        }
+        
+        InstaModel.feed(access_token, (data) => {
+            res.status(200).send(data);
+            res.end();
+        })
+    })
+}
+
+export function like(req, res) {
+
+    let mediaId = req.query.mediaId;
+    let id = req.headers.cookie.split(';').find((element) => {
+        let name = element.split('=')[0];
+        if (name[0] === ' ')
+            name = name.substring(1);
+        return name === 'id';
+    }).split('=')[1];
+    
+    UsersController.getInstaCode(id, (error, access_token) => {
+
+        if (error) {
+            res.send(error);
+            res.end();
+        }
+        
+        if (access_token === undefined) {
+            res.status(404).send('No user with specified id.');
+            res.end();
+        }
+        console.log(1);
+        InstaModel.like(mediaId, access_token, (error, data) => {
+            
+            if (error) {
+                res.status(404).send(error);
+                res.end();
+            }
+            res.status(200).send(data);
+            res.end();
+        });
+    })
+}
+
+export function dislike(req, res) {
+
+    let mediaId = req.query.id;
+    let id = req.headers.cookie.split(';').find((element) => {
+        let name = element.split('=')[0];
+        if (name[0] === ' ')
+            name = name.substring(1);
+        return name === 'id';
+    }).split('=')[1];
+    
+    UsersController.getInstaCode(id, (access_token) => {
+
+        if (error) {
+            res.send(error);
+            res.end();
+        }
+        
+        if (access_token === undefined) {
+            res.status(404).send('No user with specified id.');
+            res.end();
+        }
+        
+        InstaModel.dislike(mediaId, access_token, (status) => {
+            res.send(status);
+            res.end();
+        });
+    })
 }
