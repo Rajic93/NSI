@@ -6,6 +6,7 @@ import App from './modules/App/App';
 import Login from "./modules/App/components/Login/Login";
 import Register from './modules/App/components/Login/Register';
 import Content from './modules/App/components/Content/Content';
+import Facebook from './modules/Facebook/Facebook';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -36,6 +37,10 @@ export default (
     <Route
       path="/feed"
       component={Content}
+    />
+    <Route
+      path="/facebook"
+      component={Facebook}
     />
   </Route>
 );
