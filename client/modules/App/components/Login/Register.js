@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { connect } from "react-redux";
-import { Link } from "react-router";
+import { Link, browserHistory } from "react-router";
+import axios from "axios";
 
 var styleDiv = {
     marginTop: "20vh",
@@ -67,12 +68,26 @@ class Register extends React.Component {
     }
 
     register() {
-
-    }
-
-    login() {
-        console.log("login")
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+        let repeat = document.getElementById('repeatPassword').value;
+        console.log({email, password, repeat});
         
+        if (password !== repeat) {
+            alert("Paswords must match!");
+            return;
+        }
+        
+        axios.post('http://localhost:10000/user/register', {
+            email,
+            password
+        }).then((data) => {
+            console.log('done');
+            console.log(data);
+            browserHistory.push("http://localhost:10000/")
+        }).catch((error) => {
+            alert(error);
+        })
     }
 
     render() {
@@ -87,7 +102,7 @@ class Register extends React.Component {
                     <br/>
                     <input type="button" className="btn btn-primary" value="Register" name="register" onClick={this.register.bind(this)} style={styleButton}/>
                     <Link to="/">
-                        <input type="button" className="btn btn-success" value="Login" onClick={this.login.bind(this)} style={styleJoin}/>
+                        <input type="button" className="btn btn-success" value="Login" style={styleJoin}/>
                     </Link>
                 </div>
             </div>

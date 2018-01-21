@@ -10,4 +10,6 @@ router.route('/register').post(UsersController.register);
 
 router.route('/connect').post(UsersController.connect);
 
+router.route('/accounts').get(UsersController.getAccounts);
+
 export default router;

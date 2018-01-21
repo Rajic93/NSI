@@ -50,3 +50,8 @@ span {
 .add {
     cursor: pointer;
 }
+
+.acc-img {
+    width: 100%;
+    max-width: 150px;
+}
