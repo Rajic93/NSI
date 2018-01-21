@@ -24,7 +24,7 @@ export function redirect(req, res) {
     InstaModel.authenticate(code, (data) => {
         
         let id = req.cookies.id;
-
+      
         UsersController.connect(id, data, 'instagram', (status) => {
             
             switch (status) {
