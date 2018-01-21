@@ -28,6 +28,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
+import cors from "cors";
 
 // Import required modules
 import routes from '../client/routes';
@@ -52,6 +53,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 });
 
 // Apply body Parser and server public assets and routes
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));

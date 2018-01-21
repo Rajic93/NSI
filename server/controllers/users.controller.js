@@ -128,26 +128,55 @@ export function connect(id, account, accType, cb) {
   });
 }
 
+export function getAccounts(req, res) {
+
+  let id = req.headers.cookie.split(';').find((element) => {
+    let name = element.split('=')[0];
+    if (name[0] === ' ')
+        name = name.substring(1);
+    return name === 'id';
+  }).split('=')[1];
+
+  model.findOne({
+    _id: id
+  }, (err, response) => {
+
+    if (err) {
+      res.status(500).end();
+      return;
+    }
+
+    if(response == undefined) {
+      res.status(404).end();
+      return;
+    }
+    
+    res.status(404).send(response.connectedAccounts);
+    res.end();
+  });
+}
+
 export function getInstaCode(id, callback) {
 
-  
   model.findOne({
       _id: id
   }, (error, data) => {
 
       if (error) {
-          callback(true);
+          callback(true, false);
+          return;
       }
 
-      if (data === undefined) {
-          callback()
+      if (!data) {
+          callback(false, false);
+          return;
       }
+
       let access_token = data.connectedAccounts.find((account) => {
         
           return account[0].type === 'instagram';
       })[0].account.access_token;
       
-      access_token = '2926861514.66594bf.016ee67e3cb142b2aed1ee054fb21865';
       callback(undefined, access_token);
   })
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 // Import styles
 import style from '../Content.css';
@@ -10,23 +11,49 @@ const FeedItem = (props) => {
     let isLiked = false;
 
     const like = () => {
-        let img = document.getElementById('like');
+        if (type === 'instagram') {
+            instaLike()
+        }
+    }
+
+    const instaLike = () => {
+
         if (!isLiked) {
-            isLiked = true;
-            post.likes++;
-            img.src = 'http://wfarm4.dataknet.com/static/resources/icons/set105/13577682.png';
+            updateLikes(true);
+            axios.post('http://localhost:10000/inst/like', {
+                mediaId: post.id
+            }).then((res) => {
+            }).catch((err) => {
+                isLiked = false;
+                updateLikes(false);
+            });
         } else {
-            isLiked = false;
+            updateLikes(false);
+            axios.post('http://localhost:10000/inst/dislike', {
+                mediaId: post.id
+            }).then((res) => {
+            }).catch((err) => {
+                isLiked = true;
+                updateLikes(true);
+            });
+        }
+    }
+
+    const updateLikes = (increase) => {
+        
+        let img = document.getElementById('like');
+        if (increase) {
+            post.likes++;  
+            isLiked = true;
+            img.src = 'http://wfarm4.dataknet.com/static/resources/icons/set105/13577682.png';          
+        } else {
             post.likes--;
+            isLiked = false;
             img.src = 'https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png';
         }
         let num = document.getElementById('num');
-        num.value = `${likes} like${likes === 1 ? '' : 's'}`;
+        num.value = `${post.likes} like${post.likes === 1 ? '' : 's'}`;
     }
-
-    const renderFB = (post) => {
-        return;
-    };
 
     const renderInsta = (post) => {
         let avatar = post.avatar;
@@ -69,6 +96,10 @@ const FeedItem = (props) => {
                 </div>
             </div>
         )
+    };
+
+    const renderFB = (post) => {
+        return;
     };
 
     switch (type) {
