@@ -130,12 +130,7 @@ export function connect(id, account, accType, cb) {
 
 export function getAccounts(req, res) {
 
-  let id = req.headers.cookie.split(';').find((element) => {
-    let name = element.split('=')[0];
-    if (name[0] === ' ')
-        name = name.substring(1);
-    return name === 'id';
-  }).split('=')[1];
+  let id = req.cookies.id;
 
   model.findOne({
     _id: id
