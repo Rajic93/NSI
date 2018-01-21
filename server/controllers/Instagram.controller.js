@@ -24,7 +24,12 @@ export function redirect(req, res) {
     InstaModel.authenticate(code, (data) => {
         
         //hardcode id for now
-        let id = "5a521813d0a6e9dcecf89907";
+        let id = req.headers.cookie.split(';').find((element) => {
+            let name = element.split('=')[0];
+            if (name[0] === ' ')
+                name = name.substring(1);
+            return name === 'id';
+        }).split('=')[1];
         UsersController.connect(id, data, 'instagram', (status) => {
             
             switch (status) {
