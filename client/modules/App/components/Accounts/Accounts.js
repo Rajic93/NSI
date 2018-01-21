@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from "react-redux";
 
-// Import Styles
+import Instagram from "../../../Instagram/Instagram";
 
+// Import Styles
 import styles from "./Accounts.css";
 
 // Import Actions
@@ -77,7 +78,7 @@ class Accounts extends React.Component {
             <div className={styles.filters}>
                 <ul id="accounts">
                     <li><span className="glyphicon glyphicon-random" aria-hidden="true" onClick={this.filter.bind(this, "MIX")} ></span></li>
-                    {/* {this.props.accounts.map(account => this.addAccount(account))} */}
+                    <Instagram />
                 </ul>
                 <img src="#" className={styles.add} onClick={this.addAccount.bind(this)} />
             </div>

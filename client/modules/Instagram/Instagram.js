@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { browserHistory } from "react-router";
 import axios from 'axios';
 
 
@@ -13,9 +14,13 @@ import { redirect } from "./InstagramActions";
 class Instagram extends Component {
 
   login() {
+    console.log('login');
       axios.get('http://localhost:10000/inst/login')
           .then((response) => {
-              window.location.replace(response.data);
+            console.log('success');
+            console.log(response.data);
+            //browserHistory.push(response.data);
+            window.location.replace(response.data);
           })
           .catch((err) => {
               console.log(err);

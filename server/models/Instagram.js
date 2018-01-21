@@ -7,7 +7,8 @@ const _INSTA_URL_ = `https://api.instagram.com/oauth/authorize/?client_id=${conf
                     `&scope=public_content+follower_list+comments+relationships+likes`;
 
 export function redirect(res) {
-    res.redirect(_INSTA_URL_);
+    console.log('redirect 1');
+    res.send(_INSTA_URL_);
 }
 
 export function authenticate(code, callback) {

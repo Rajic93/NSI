@@ -23,13 +23,8 @@ export function redirect(req, res) {
     let code = req.query.code;
     InstaModel.authenticate(code, (data) => {
         
-        //hardcode id for now
-        let id = req.headers.cookie.split(';').find((element) => {
-            let name = element.split('=')[0];
-            if (name[0] === ' ')
-                name = name.substring(1);
-            return name === 'id';
-        }).split('=')[1];
+        let id = req.cookies.id;
+      
         UsersController.connect(id, data, 'instagram', (status) => {
             
             switch (status) {
@@ -58,12 +53,8 @@ export function redirect(req, res) {
  */
 export function getFeed(req, res) {
 
-    let id = req.headers.cookie.split(';').find((element) => {
-        let name = element.split('=')[0];
-        if (name[0] === ' ')
-            name = name.substring(1);
-        return name === 'id';
-    }).split('=')[1];
+    console.log(req.cookies);
+    let id = req.cookies.id;
 
 
     UsersController.getInstaCode(id, (error, access_token) => {
@@ -116,12 +107,7 @@ const Format = (response) => {
 export function like(req, res) {
 
     let mediaId = req.body.mediaId;
-    let id = req.headers.cookie.split(';').find((element) => {
-        let name = element.split('=')[0];
-        if (name[0] === ' ')
-            name = name.substring(1);
-        return name === 'id';
-    }).split('=')[1];
+    let id = req.cookies.id;
     
     UsersController.getInstaCode(id, (error, access_token) => {
 
@@ -154,12 +140,7 @@ export function like(req, res) {
 export function dislike(req, res) {
 
     let mediaId = req.body.mediaId;
-    let id = req.headers.cookie.split(';').find((element) => {
-        let name = element.split('=')[0];
-        if (name[0] === ' ')
-            name = name.substring(1);
-        return name === 'id';
-    }).split('=')[1];
+    let id = req.cookies.id;
     
     UsersController.getInstaCode(id, (error, access_token) => {
 
