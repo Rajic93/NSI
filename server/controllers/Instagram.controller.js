@@ -60,28 +60,57 @@ export function getFeed(req, res) {
         return name === 'id';
     }).split('=')[1];
 
+
     UsersController.getInstaCode(id, (error, access_token) => {
-    
+
         if (error) {
             res.send(error);
             res.end();
+            return;
         }
         
-        if (access_token === undefined) {
+        if (!access_token) {
             res.status(404).send('No user with specified id.');
             res.end();
+            return;
         }
         
-        InstaModel.feed(access_token, (data) => {
-            res.status(200).send(data);
+        InstaModel.feed(access_token, (error, data) => {
+
+            if (error) {
+                res.status(404).send(error);
+                res.end();
+                return;
+            }
+            let formatedData = Format(data);
+            res.status(200).send(formatedData);
             res.end();
         })
     })
 }
 
+const Format = (response) => {
+    let data = response.data;
+    let formatedData = []
+    data.forEach(object => {
+        let formatedObject = {
+            type: 'instagram',
+            data: {
+                id: object.id,
+                avatar: object.user.profile_picture,
+                img: object.images.standard_resolution.url,
+                comments: object.comments.count,
+                likes: object.likes.count
+            }
+        };
+        formatedData.push(formatedObject);
+    });
+    return formatedData;
+}
+
 export function like(req, res) {
 
-    let mediaId = req.query.mediaId;
+    let mediaId = req.body.mediaId;
     let id = req.headers.cookie.split(';').find((element) => {
         let name = element.split('=')[0];
         if (name[0] === ' ')
@@ -94,19 +123,23 @@ export function like(req, res) {
         if (error) {
             res.send(error);
             res.end();
+            return;
         }
         
         if (access_token === undefined) {
             res.status(404).send('No user with specified id.');
             res.end();
+            return;
         }
-        console.log(1);
+
         InstaModel.like(mediaId, access_token, (error, data) => {
             
             if (error) {
                 res.status(404).send(error);
                 res.end();
+                return;
             }
+
             res.status(200).send(data);
             res.end();
         });
@@ -115,7 +148,7 @@ export function like(req, res) {
 
 export function dislike(req, res) {
 
-    let mediaId = req.query.id;
+    let mediaId = req.body.mediaId;
     let id = req.headers.cookie.split(';').find((element) => {
         let name = element.split('=')[0];
         if (name[0] === ' ')
@@ -123,20 +156,29 @@ export function dislike(req, res) {
         return name === 'id';
     }).split('=')[1];
     
-    UsersController.getInstaCode(id, (access_token) => {
+    UsersController.getInstaCode(id, (error, access_token) => {
 
         if (error) {
             res.send(error);
             res.end();
+            return;
         }
         
         if (access_token === undefined) {
             res.status(404).send('No user with specified id.');
             res.end();
+            return;
         }
         
-        InstaModel.dislike(mediaId, access_token, (status) => {
-            res.send(status);
+        InstaModel.dislike(mediaId, access_token, (error, data) => {
+            
+            if (error) {
+                res.status(404).send(error);
+                res.end();
+                return;
+            }
+
+            res.status(200).send(data);
             res.end();
         });
     })

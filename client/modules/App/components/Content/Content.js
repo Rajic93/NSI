@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import axios from "axios";
 
 // Import Style
 import styles from './Content.css';
@@ -12,7 +13,7 @@ import Feed from "./components/Feed";
 //import { toggleAddPost } from '../../AppActions';
 
 const Content = (props) => {
-
+    
     return (
         <div className={styles.cont}>
         <div className="row">

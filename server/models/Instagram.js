@@ -30,27 +30,25 @@ export function feed(access_token, callback) {
 
     let url = `https://api.instagram.com/v1/users/self/media/recent/?access_token=${access_token}`;
     axios.get(url)
-    .then((data) => {
-        callback(data);
+    .then((response) => {
+        callback(false, response.data);
     })
     .catch((error) => {
-        callback(error);
+        callback(true, false);
     });
 }
 
-export function like(mediaId, access_token, callback) {
+export function like(mediaId, token, callback) {
 
-    let url = `https://api.instagram.com/v1/media/${mediaId}/likes`;    
+    let url = `https://api.instagram.com/v1/media/${mediaId}/likes`;  
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     axios.post(url, querystring.stringify({
-        access_token: access_token
+        access_token: token
     }))
-    .then((data) => {
-        console.log(2);
-        callback(undefined, 200);
+    .then((response) => {
+        callback(false, response.data);
     }).catch((error) => {
-        console.log(3);
-        callback(error)
+        callback(error, false)
     });
 }
 
@@ -58,10 +56,10 @@ export function dislike(mediaId, access_token, callback) {
 
     let url = `https://api.instagram.com/v1/media/${mediaId}/likes?access_token=${access_token}`;
     axios.delete(url)
-    .then((data) => {
-        callback(200);
+    .then((response) => {
+        callback(false, response.data);
     }).catch((error) => {
-
+        callback(error, false)
     });
 
 }
