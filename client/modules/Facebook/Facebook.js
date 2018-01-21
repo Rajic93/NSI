@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { fbSdkReady, initFbSdk, getShortLivedToken, generateLongLivedToken, getFeed } from './FacebookActions';
 import { FacebookNotConnected } from './components/FacebookNotConnected';
 import { FacebookConnected } from './components/FacebookConnected';
+import { FacebookFeed } from './components/FacebookFeed';
 
 var styleDiv = {
   marginTop: "10vh",
@@ -53,9 +54,9 @@ class Facebook extends Component {
   }
 
 
-
   render() {
     let connectOption = null;
+
     if (this.props.isTokenReady) {
       connectOption = <FacebookConnected onClick={this.handleDisconectClick}> </FacebookConnected>;
     } else {
@@ -67,9 +68,12 @@ class Facebook extends Component {
         <div style={styleFacebook}> Facebook </div>
         {connectOption}
         <div style={messageDiv}>Status: {this.props.message}</div>
-        <Link to="/"> Home </Link>
+        <Link to="/"> Home {this.props.posts.length}</Link>
         <button onClick={this.props.getFeed}> Get feed </button>
-      </div>
+        <FacebookFeed posts={this.props.posts}></FacebookFeed>
+
+
+      </div >
     );
   }
 }
@@ -79,7 +83,8 @@ const mapStateToProps = (state) => {
     isSdkActive: state.facebook.isSdkReady,
     isTokenReady: state.facebook.isTokenReady,
     token: state.facebook.longLivedToken,
-    message: state.facebook.message
+    message: state.facebook.message,
+    posts: state.facebook.posts
   };
 };
 
@@ -89,10 +94,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(initFbSdk());
     },
     getShortLivedToken: () => {
-      dispatch(getShortLivedToken('publish_actions,user_posts'));
+      dispatch(getShortLivedToken('publish_actions,user_posts,user_photos'));
     },
     generateLongLivedToken: () => {
-      dispatch(generateLongLivedToken('publish_actions,user_posts'));
+      dispatch(generateLongLivedToken('publish_actions,user_posts,user_photos'));
     },
     getFeed: () => {
       dispatch(getFeed(ownProps.token));

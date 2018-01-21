@@ -1,4 +1,4 @@
-import { getShortLivedTokenFromFb, getLongLivedToken, initFacebookSdk, getFacebookPosts } from "./FacebookAPI";
+import { getShortLivedTokenFromFb, getLongLivedToken, initFacebookSdk, getFacebookPosts, loadPostPicture } from "./FacebookAPI";
 
 // Export Constants
 
@@ -22,6 +22,8 @@ export const GET_SAVED_TOKEN_FAILURE = 'GET_SAVED_TOKEN_REQUEST';
 export const VALIDATE_TOKEN_REQUEST = 'VALIDATE_TOKEN_REQUEST';
 export const VALIDATE_TOKEN_SUCCESS = 'VALIDATE_TOKEN_SUCCESS';
 export const VALIDATE_TOKEN_FAILURE = 'VALIDATE_TOKEN_FAILURE';
+
+export const RECEIVED_FB_FEED = 'RECEIVED_FB_FEED';
 
 
 export const FB_SDK_READY = "FB_SDK_READY";
@@ -48,6 +50,13 @@ export function getNewTokenFailure(errorMessage) {
         type: GET_NEW_TOKEN_FAILURE,
         errorMessage: errorMessage
     };
+}
+
+export function receivedFacebookFeed(posts) {
+    return {
+        type: RECEIVED_FB_FEED,
+        posts: posts
+    }
 }
 
 
@@ -92,11 +101,22 @@ export function generateLongLivedToken(permissionsList) {
 
 export function getFeed(token) {
     return function (dispatch) {
-        getFacebookPosts(token).then((posts) => {
-            alert("Feed OK");
-        }).catch((err) => {
-            console.log(err);
-        });;
+        getFacebookPosts(token)
+            .then((posts) => {
+                let loadingPostsImages = [];
+                let loadingPostImage;
+                posts.forEach(post => {
+                    loadingPostImage = loadPostPicture(post);
+                    loadingPostsImages.push(loadingPostImage);
+                });
+                return Promise.all(loadingPostsImages);
+            }).then((postsWithImages) => {
+                alert("loadedPIcs");
+                dispatch(receivedFacebookFeed(postsWithImages));
+                console.log(postsWithImages);
+            }).catch((err) => {
+                console.log(err);
+            });;
     }
 }
 

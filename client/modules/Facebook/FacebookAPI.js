@@ -50,17 +50,60 @@ export function getLongLivedToken(shortLivedAccessToken) {
 };
 
 export function getFacebookPosts(token) {
-    return new Promise((reject, resolve) => {
+    return new Promise((resolve, reject) => {
         FB.api(
-            "/me/feed",
+            "/me/posts",
             function (response) {
                 if (response && !response.error) {
-                    alert("Feed");
-                    console.log(response);
-                    resolve(response);
+                    resolve(response.data);
                 } else {
                     reject(response);
                 }
+            }, {
+                fields: "id,message,created_time,type,object_id"
+            }
+        );
+    });
+}
+
+export function loadPostPicture(post) {
+    return new Promise((resolve, reject) => {
+        const photoId = post.object_id;
+
+        if (post.type != "photo") {
+            resolve(post);
+        }
+
+        FB.api(
+            "/" + photoId,
+            function (response) {
+                if (response && !response.error) {
+                    post.images = response.images;
+                    resolve(post);
+                } else {
+                    reject(response);
+                }
+            }, {
+                fields: "images"
+            }
+        );
+    });
+}
+
+
+export function getMyProfile(token) {
+    return new Promise((resolve, reject) => {
+        FB.api(
+            "/me",
+            function (response) {
+                if (response && !response.error) {
+                    console.log(response);
+                    resolve(response.data);
+                } else {
+                    reject(response);
+                }
+            }, {
+                fields: "id,name,picture"
             }
         );
     });
