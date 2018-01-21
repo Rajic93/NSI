@@ -1,4 +1,4 @@
-import { getShortLivedTokenFromFb, getLongLivedToken, initFacebookSdk, getFacebookPosts, loadPostPicture } from "./FacebookAPI";
+import { getShortLivedTokenFromFb, getLongLivedToken, initFacebookSdk, getFacebookPosts, loadPostPicture, getPostAutohorImage } from "./FacebookAPI";
 
 // Export Constants
 
@@ -110,6 +110,14 @@ export function getFeed(token) {
                     loadingPostsImages.push(loadingPostImage);
                 });
                 return Promise.all(loadingPostsImages);
+            }).then((posts) => {
+                let loadingPostsAuthorImages = [];
+                let authorImage;
+                posts.forEach(post => {
+                    authorImage = getPostAutohorImage(post);
+                    loadingPostsAuthorImages.push(authorImage);
+                });
+                return Promise.all(loadingPostsAuthorImages);
             }).then((postsWithImages) => {
                 alert("loadedPIcs");
                 dispatch(receivedFacebookFeed(postsWithImages));

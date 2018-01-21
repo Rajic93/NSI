@@ -5,7 +5,22 @@ var imgStyle = {
     height: "400px"
 };
 
-function FacebookImage(props) {
+var postStyle = {
+    borderStyle: "groove"
+};
+
+function FacebookPostAuthor(props) {
+    var date = new Date(props.date).toLocaleTimeString();
+    return (
+        <div>
+            <img src={props.profilePicture.url} />
+            <div>{props.name}</div>
+            <div>{date}</div>
+        </div>
+    )
+}
+
+function FacebookPostImage(props) {
     const images = props.images;
     if (images && images.length > 0) {
         return <img src={images[0].source} style={imgStyle} />
@@ -14,7 +29,7 @@ function FacebookImage(props) {
     }
 }
 
-function FacebookComment(props) {
+function FacebookPostComment(props) {
     const post = props.post;
     return (
         <div>
@@ -27,9 +42,14 @@ export function FacebookFeed(props) {
     const posts = props.posts;
 
     const feed = posts.map((post, i) =>
-        <li key={i}>
-            <FacebookComment post={post}></FacebookComment>
-            <FacebookImage images={post.images}></FacebookImage>
+        <li key={i} style={postStyle}>
+            <FacebookPostAuthor
+                name={post.from.name}
+                profilePicture={post.authorPicture}
+                date={post.created_time}>
+            </FacebookPostAuthor>
+            <FacebookPostComment post={post}></FacebookPostComment>
+            <FacebookPostImage images={post.images}></FacebookPostImage>
         </li>
     );
 

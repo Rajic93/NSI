@@ -60,7 +60,7 @@ export function getFacebookPosts(token) {
                     reject(response);
                 }
             }, {
-                fields: "id,message,created_time,type,object_id"
+                fields: "id,message,created_time,type,object_id,from"
             }
         );
     });
@@ -91,14 +91,17 @@ export function loadPostPicture(post) {
 }
 
 
-export function getMyProfile(token) {
+export function getPostAutohorImage(post) {
     return new Promise((resolve, reject) => {
+        const postAuthorId = post.from.id;
+
         FB.api(
-            "/me",
+            "/" + postAuthorId,
             function (response) {
                 if (response && !response.error) {
                     console.log(response);
-                    resolve(response.data);
+                    post.authorPicture = response.picture.data;
+                    resolve(post);
                 } else {
                     reject(response);
                 }
