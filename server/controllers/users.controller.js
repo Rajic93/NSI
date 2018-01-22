@@ -146,7 +146,7 @@ export function getAccounts(req, res) {
       return;
     }
 
-    res.status(404).send(response.connectedAccounts);
+    res.status(200).send(response.connectedAccounts);
     res.end();
   });
 }

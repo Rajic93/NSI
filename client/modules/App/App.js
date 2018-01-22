@@ -75,10 +75,6 @@ export class App extends Component {
           <div id='login' className='popup-login'>
               
           </div>
-          <div> Routes </div>
-          <Link to="/">  Home  </Link>
-          <Link to="/facebook">  Connect to facebook  </Link>
-          <Link to="/register">  Register  </Link>
         </div>
       </div>
     );

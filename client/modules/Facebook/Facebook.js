@@ -7,29 +7,11 @@ import { FacebookNotConnected } from './components/FacebookNotConnected';
 import { FacebookConnected } from './components/FacebookConnected';
 import { FacebookFeed } from './components/FacebookFeed';
 
-var styleDiv = {
-  marginTop: "10vh",
-  marginLeft: "40%",
-  width: "30%",
-  minHeight: "300px",
-  backgroundColor: "#fcfdfd",
-  borderColor: "#eef1f1",
-  borderStyle: "outset",
-  borderSize: "2px",
-  borderRadius: "5px",
-}
 
-var messageDiv = {
-  backgroundColor: "#c6dcff",
-  marginTop: "60px"
-}
-
-var styleFacebook = {
-  backgroundColor: "#00067c",
-  color: "white",
-  fontSize: "40px",
-  paddingLeft: "10px"
-}
+var styleLogo={
+  width:"75px",
+  height:"75px"
+};
 
 
 class Facebook extends Component {
@@ -65,15 +47,8 @@ class Facebook extends Component {
     }
 
     return (
-      <div style={styleDiv}>
-        <div style={styleFacebook}> Facebook </div>
-        {connectOption}
-        <div style={messageDiv}>Status: {this.props.message}</div>
-        <Link to="/feed">Go to Feed {this.props.posts.length}</Link>
-        <button onClick={this.props.getFeed}> Get feed </button>
-        <FacebookFeed posts={this.props.posts}></FacebookFeed>
-
-
+      <div>
+        <img src="http://localhost:10000/fb-logo.png" onClick={this.handleConnectClick} style={styleLogo}/>
       </div >
     );
   }

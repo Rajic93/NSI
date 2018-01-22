@@ -4,6 +4,10 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from "react-router";
 import axios from 'axios';
 
+var logoStyle={
+  width:"60px",
+  height:"60px"
+};
 
 // Import Style
 //import styles from './Instagram.css';
@@ -30,7 +34,7 @@ class Instagram extends Component {
   render() {
     return (
       <div>
-        <button id="login" onClick={this.login.bind(this)}>Instagram</button>
+        <img id="login" onClick={this.login.bind(this)} style={logoStyle} src="http://localhost:10000/ig-logo.png"/>
       </div>
     );
   }
