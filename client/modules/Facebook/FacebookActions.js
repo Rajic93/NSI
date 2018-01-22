@@ -1,4 +1,4 @@
-import { getShortLivedTokenFromFb, getLongLivedToken, initFacebookSdk, getFacebookPosts, loadPostPicture, getPostAutohorImage } from "./FacebookAPI";
+import { getShortLivedTokenFromFb, getLongLivedToken, initFacebookSdk, getFacebookPosts, loadPostPicture, getPostAutohorImage, getSavedLongLivedToken } from "./FacebookAPI";
 
 // Export Constants
 
@@ -13,8 +13,8 @@ export const GET_NEW_TOKEN_FAILURE = 'GET_NEW_TOKEN_FAILURE';
  * Get saved token from our server.
  */
 export const GET_SAVED_TOKEN_REQUEST = 'GET_SAVED_TOKEN_REQUEST';
-export const GET_SAVED_TOKEN_SUCCESS = 'GET_SAVED_TOKEN_REQUEST';
-export const GET_SAVED_TOKEN_FAILURE = 'GET_SAVED_TOKEN_REQUEST';
+export const GET_SAVED_TOKEN_SUCCESS = 'GET_SAVED_TOKEN_SUCCESS';
+export const GET_SAVED_TOKEN_FAILURE = 'GET_SAVED_TOKEN_FAILURE';
 
 /**
  * Validate token cause it can expire.
@@ -34,6 +34,7 @@ export function fbSdkReady() {
     return { type: FB_SDK_READY };
 }
 
+//Get new token
 export function getNewTokenRequest() {
     return { type: GET_NEW_TOKEN_REQUEST };
 }
@@ -48,6 +49,25 @@ export function getNewTokenSuccess(token) {
 export function getNewTokenFailure(errorMessage) {
     return {
         type: GET_NEW_TOKEN_FAILURE,
+        errorMessage: errorMessage
+    };
+}
+
+//Get saved token
+export function getSavedTokenRequest() {
+    return { type: GET_SAVED_TOKEN_REQUEST };
+}
+
+export function getSavedTokenSuccess(token) {
+    return {
+        type: GET_SAVED_TOKEN_SUCCESS,
+        token: token
+    };
+}
+
+export function getSavedTokenFailure(errorMessage) {
+    return {
+        type: GET_SAVED_TOKEN_FAILURE,
         errorMessage: errorMessage
     };
 }
@@ -70,6 +90,20 @@ export function initFbSdk() {
             });
     };
 }
+
+
+
+export function getSavedToken() {
+    return function (dispatch) {
+        return getSavedLongLivedToken()
+            .then((token) => {
+                dispatch(getSavedTokenSuccess(token));
+            }).catch((err) => {
+                console.log(err);
+            });
+    };
+}
+
 
 
 export function getShortLivedToken(permissionsList) {
@@ -106,7 +140,7 @@ export function getFeed(token) {
                 let loadingPostsImages = [];
                 let loadingPostImage;
                 posts.forEach(post => {
-                    loadingPostImage = loadPostPicture(post);
+                    loadingPostImage = loadPostPicture(post, token);
                     loadingPostsImages.push(loadingPostImage);
                 });
                 return Promise.all(loadingPostsImages);
@@ -114,17 +148,37 @@ export function getFeed(token) {
                 let loadingPostsAuthorImages = [];
                 let authorImage;
                 posts.forEach(post => {
-                    authorImage = getPostAutohorImage(post);
+                    authorImage = getPostAutohorImage(post, token);
                     loadingPostsAuthorImages.push(authorImage);
                 });
                 return Promise.all(loadingPostsAuthorImages);
             }).then((postsWithImages) => {
-                alert("loadedPIcs");
+                let wrappedPosts = [];
+                postsWithImages.forEach(post => {
+                    wrappedPosts.push({ type: 'facebook', data: post });
+                });
                 dispatch(receivedFacebookFeed(postsWithImages));
-                console.log(postsWithImages);
+                console.log(wrappedPosts);
             }).catch((err) => {
                 console.log(err);
             });;
     }
 }
 
+
+export function initializeFacebook(permissionsList) {
+    return function (dispatch) {
+        return initFacebookSdk('161075037850261')
+            .then(() => {
+                dispatch(getNewTokenRequest());
+                return getShortLivedTokenFromFb(permissionsList);
+            }).then((token) => {
+                dispatch(getNewTokenSuccess(token));
+                return Promise.resolve(token);
+            }).catch((msg) => {
+                dispatch(getNewTokenFailure(msg));
+                return Promise.reject(msg);
+            });;
+
+    };
+}

@@ -9,30 +9,54 @@ var postStyle = {
     borderStyle: "groove"
 };
 
-function FacebookPostAuthor(props) {
+var avatar = {
+    width: "40px",
+    height: "40px",
+    clipPath: "circle(15px at center)"
+}
+
+var imgMain = {
+    display: "inline-block",
+    width: "100%",
+    minHeight: "300px",
+    padding: "2px"
+}
+
+
+var msgTextStyle = {
+    fontWeight: "bold"
+};
+
+var nameStyle = {
+    color: "blue"
+};
+
+export function FacebookPostAuthor(props) {
     var date = new Date(props.date).toLocaleTimeString();
     return (
         <div>
-            <img src={props.profilePicture.url} />
-            <div>{props.name}</div>
-            <div>{date}</div>
+            <img src={props.profilePicture.url} style={avatar} />
+            <div>
+                <div style={nameStyle}>{props.name}</div>
+                <div>{date}</div>
+            </div>
         </div>
     )
 }
 
-function FacebookPostImage(props) {
+export function FacebookPostImage(props) {
     const images = props.images;
     if (images && images.length > 0) {
-        return <img src={images[0].source} style={imgStyle} />
+        return <img src={images[0].source} style={imgMain} />
     } else {
         return null;
     }
 }
 
-function FacebookPostComment(props) {
+export function FacebookPostComment(props) {
     const post = props.post;
     return (
-        <div>
+        <div style={msgTextStyle}>
             {post.message}
         </div>
     );

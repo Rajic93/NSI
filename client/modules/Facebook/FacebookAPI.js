@@ -38,6 +38,17 @@ export function getShortLivedTokenFromFb(permissionsList) {
     })
 };
 
+export function getSavedLongLivedToken() {
+    return axios.post('http://localhost:10000/fb/token')
+        .then((response) => {
+            console.log(response);
+            if (response.status != 200) {
+                return Promise.reject(response.statusText);
+            }
+            return response.data;
+        });
+};
+
 export function getLongLivedToken(shortLivedAccessToken) {
     return axios.post('http://localhost:10000/fb/login', { userShortLivedToken: shortLivedAccessToken })
         .then((response) => {
@@ -60,13 +71,14 @@ export function getFacebookPosts(token) {
                     reject(response);
                 }
             }, {
+                access_token: token,
                 fields: "id,message,created_time,type,object_id,from"
             }
         );
     });
 }
 
-export function loadPostPicture(post) {
+export function loadPostPicture(post, token) {
     return new Promise((resolve, reject) => {
         const photoId = post.object_id;
 
@@ -84,6 +96,7 @@ export function loadPostPicture(post) {
                     reject(response);
                 }
             }, {
+                access_token: token,
                 fields: "images"
             }
         );
@@ -91,7 +104,7 @@ export function loadPostPicture(post) {
 }
 
 
-export function getPostAutohorImage(post) {
+export function getPostAutohorImage(post, token) {
     return new Promise((resolve, reject) => {
         const postAuthorId = post.from.id;
 
@@ -99,16 +112,52 @@ export function getPostAutohorImage(post) {
             "/" + postAuthorId,
             function (response) {
                 if (response && !response.error) {
-                    console.log(response);
                     post.authorPicture = response.picture.data;
                     resolve(post);
                 } else {
                     reject(response);
                 }
             }, {
+                access_token: token,
                 fields: "id,name,picture"
             }
         );
     });
 
 }
+
+
+
+export function getWrappedFacebookFeed(token) {
+    return getFacebookPosts(token)
+        .then((posts) => {
+            let loadingPostsImages = [];
+            let loadingPostImage;
+            posts.forEach(post => {
+                loadingPostImage = loadPostPicture(post, token);
+                loadingPostsImages.push(loadingPostImage);
+            });
+            return Promise.all(loadingPostsImages);
+        }).then((posts) => {
+            let loadingPostsAuthorImages = [];
+            let authorImage;
+            posts.forEach(post => {
+                authorImage = getPostAutohorImage(post, token);
+                loadingPostsAuthorImages.push(authorImage);
+            });
+            return Promise.all(loadingPostsAuthorImages);
+        }).then((postsWithImages) => {
+            let wrappedPosts = [];
+            postsWithImages.forEach(post => {
+                wrappedPosts.push({ type: 'facebook', data: post });
+            });
+            console.log(wrappedPosts);
+            return Promise.resolve(wrappedPosts);
+        }).catch((err) => {
+            console.log(err);
+            return Promise.reject(err);
+        });;
+
+
+}
+

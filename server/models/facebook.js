@@ -13,7 +13,7 @@ export function generateUserLongLivedToken(shortLivedToken, callback) {
     .then((response) => {
         callback(response.data);
     }).catch((err) => {
-        callback(err)
+        console.log(err);
     });
 };
 

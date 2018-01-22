@@ -1,5 +1,5 @@
 // Import Actions
-import { FB_SDK_READY, GET_NEW_TOKEN_SUCCESS, RECEIVED_FB_FEED } from './FacebookActions';
+import { FB_SDK_READY, GET_NEW_TOKEN_SUCCESS, RECEIVED_FB_FEED, GET_SAVED_TOKEN_SUCCESS } from './FacebookActions';
 
 export const AccountState = {
   NOT_CONNECTED: 'NOT_CONNECTED',
@@ -27,6 +27,11 @@ const FacebookReducer = (state = initialState, action) => {
         message: "Facebook sdk is ready"
       })
     case GET_NEW_TOKEN_SUCCESS:
+      return Object.assign({}, state, {
+        longLivedToken: action.token,
+        isTokenReady: true
+      })
+    case GET_SAVED_TOKEN_SUCCESS:
       return Object.assign({}, state, {
         longLivedToken: action.token,
         isTokenReady: true

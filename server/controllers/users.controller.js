@@ -10,14 +10,14 @@ export function login(req, res) {
   let password = req.body.password;
   model.findOne({
     'signingEmail': email
-  },(err, data) => {
+  }, (err, data) => {
 
     console.log('0');
-    if (err){
+    if (err) {
       res.status(400).end();
       return;
     }
-console.log('1');
+    console.log('1');
     if (data == null) {
       res.status(300).send("data does not exist.");
       res.end();
@@ -37,11 +37,11 @@ console.log('1');
         id: data._id,
         accounts: []
       };
-  
+
       data.connectedAccounts.forEach(account => {
         response.accounts.push(account.type);
       });
-  
+
       res.status(200).send(response);
       res.end();
     });
@@ -53,30 +53,30 @@ export function register(req, res) {
   let email = req.body.email;
   let password = req.body.password;
   let salt;
-  
+
   model.findOne((err, data) => {
 
-    if (err){
+    if (err) {
       res.status(404).end();
       return;
     }
 
     //already exists
-    if (data){
+    if (data) {
       res.status(400).send('already exists');
       res.end();
       return;
     }
 
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-      
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+
       if (err) {
         res.status(400).send(err);
         res.end();
         return;
       }
 
-      bcrypt.hash(password, salt, function(err, hash) {
+      bcrypt.hash(password, salt, function (err, hash) {
 
         salt = salt;
 
@@ -85,7 +85,7 @@ export function register(req, res) {
           res.end();
           return;
         }
-        
+
         let newUser = new model({
           signingEmail: email,
           signingHashedPassword: hash,
@@ -111,16 +111,16 @@ export function connect(id, account, accType, cb) {
       return;
     }
 
-    if(response == undefined) {
+    if (response == undefined) {
       cb(404);
       return;
     }
-    
+
     let item = {
       type: accType,
       account: account
     };
-    
+
     response.connectedAccounts.push(item);
     response.save();
 
@@ -141,11 +141,11 @@ export function getAccounts(req, res) {
       return;
     }
 
-    if(response == undefined) {
+    if (response == undefined) {
       res.status(404).end();
       return;
     }
-    
+
     res.status(404).send(response.connectedAccounts);
     res.end();
   });
@@ -154,24 +154,57 @@ export function getAccounts(req, res) {
 export function getInstaCode(id, callback) {
 
   model.findOne({
-      _id: id
+    _id: id
   }, (error, data) => {
 
-      if (error) {
-          callback(true, false);
-          return;
-      }
+    if (error) {
+      callback(true, false);
+      return;
+    }
 
-      if (!data) {
-          callback(false, false);
-          return;
-      }
+    if (!data) {
+      callback(false, false);
+      return;
+    }
 
-      let access_token = data.connectedAccounts.find((account) => {
-        
-          return account[0].type === 'instagram';
-      })[0].account.access_token;
-      
-      callback(undefined, access_token);
+    let access_token = data.connectedAccounts.find((account) => {
+
+      return account[0].type === 'instagram';
+    })[0].account.access_token;
+
+    callback(undefined, access_token);
+  })
+}
+
+export function getFaceCode(id, callback) {
+
+  model.findOne({
+    _id: id
+  }, (error, data) => {
+
+    if (error) {
+      callback(true, false);
+      return;
+    }
+
+    if (!data) {
+      callback(false, false);
+      return;
+    }
+
+    let fbAccount = data.connectedAccounts.find((account) => {
+
+      return account[0].type === 'facebook';
+    });
+
+    let token;
+    if (fbAccount && fbAccount.length > 0) {
+      token = fbAccount[0].account.token;
+    } else {
+      callback(false, "");
+      return;
+    }
+
+    callback(undefined, token);
   })
 }

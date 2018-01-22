@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from "react-router";
 import { bindActionCreators } from 'redux';
-import { fbSdkReady, initFbSdk, getShortLivedToken, generateLongLivedToken, getFeed } from './FacebookActions';
+import { fbSdkReady, initFbSdk, getShortLivedToken, generateLongLivedToken, getFeed, getSavedToken } from './FacebookActions';
 import { FacebookNotConnected } from './components/FacebookNotConnected';
 import { FacebookConnected } from './components/FacebookConnected';
 import { FacebookFeed } from './components/FacebookFeed';
@@ -30,6 +30,7 @@ var styleFacebook = {
   fontSize: "40px",
   paddingLeft: "10px"
 }
+
 
 class Facebook extends Component {
 
@@ -68,7 +69,7 @@ class Facebook extends Component {
         <div style={styleFacebook}> Facebook </div>
         {connectOption}
         <div style={messageDiv}>Status: {this.props.message}</div>
-        <Link to="/"> Home {this.props.posts.length}</Link>
+        <Link to="/feed">Go to Feed {this.props.posts.length}</Link>
         <button onClick={this.props.getFeed}> Get feed </button>
         <FacebookFeed posts={this.props.posts}></FacebookFeed>
 
@@ -101,6 +102,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     getFeed: () => {
       dispatch(getFeed(ownProps.token));
+    },
+    getSavedToken: () => {
+      dispatch(getSavedToken());
     }
   };
 };

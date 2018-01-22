@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { Link } from "react-router";
+import axios from "axios";
 
 import Instagram from "../../../Instagram/Instagram";
+
 
 // Import Styles
 import styles from "./Accounts.css";
@@ -79,6 +82,7 @@ class Accounts extends React.Component {
                 <ul id="accounts">
                     <li><span className="glyphicon glyphicon-random" aria-hidden="true" onClick={this.filter.bind(this, "MIX")} ></span></li>
                     <Instagram />
+                    <Link to="/facebook">Facebook</Link>
                 </ul>
                 <img src="#" className={styles.add} onClick={this.addAccount.bind(this)} />
             </div>

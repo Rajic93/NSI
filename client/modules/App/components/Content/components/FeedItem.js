@@ -3,6 +3,7 @@ import axios from "axios";
 
 // Import styles
 import style from '../Content.css';
+import { FacebookPostAuthor, FacebookPostComment, FacebookPostImage } from "../../../../Facebook/components/FacebookFeed";
 
 
 const FeedItem = (props) => {
@@ -40,12 +41,12 @@ const FeedItem = (props) => {
     }
 
     const updateLikes = (increase) => {
-        
+
         let img = document.getElementById('like');
         if (increase) {
-            post.likes++;  
+            post.likes++;
             isLiked = true;
-            img.src = 'http://wfarm4.dataknet.com/static/resources/icons/set105/13577682.png';          
+            img.src = 'http://wfarm4.dataknet.com/static/resources/icons/set105/13577682.png';
         } else {
             post.likes--;
             isLiked = false;
@@ -67,7 +68,7 @@ const FeedItem = (props) => {
                         <tbody>
                             <tr className={style['avatar-container']}>
                                 <td>
-                                    <img className={style['avatar']} src={avatar}/>
+                                    <img className={style['avatar']} src={avatar} />
                                 </td>
                             </tr>
                             <tr className={style['img-main']}>
@@ -77,13 +78,13 @@ const FeedItem = (props) => {
                             </tr>
                             <tr className={style['actions']}>
                                 <td>
-                                    <img id='like' className={style.heart} onClick={like} src='https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png'/>
+                                    <img id='like' className={style.heart} onClick={like} src='https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png' />
                                     <span id='num'>{likes} like{likes === 1 ? '' : 's'}</span>
                                 </td>
                             </tr>
                             <tr className={style['comments']}>
                                 <td>
-                                    
+
                                 </td>
                             </tr>
                             {/* <tr className={style['comment-add']}>
@@ -99,7 +100,17 @@ const FeedItem = (props) => {
     };
 
     const renderFB = (post) => {
-        return;
+        return (
+            <div className='panel panel-default'>
+                <FacebookPostAuthor
+                    name={post.from.name}
+                    profilePicture={post.authorPicture}
+                    date={post.created_time}>
+                </FacebookPostAuthor>
+                <FacebookPostComment post={post}></FacebookPostComment>
+                <FacebookPostImage images={post.images}></FacebookPostImage>
+            </div>
+        );
     };
 
     switch (type) {
