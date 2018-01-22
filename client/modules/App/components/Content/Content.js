@@ -12,26 +12,30 @@ import Feed from "./components/Feed";
 // Import Actions
 //import { toggleAddPost } from '../../AppActions';
 
+var contentStyle = {
+    backgroundColor: "#E9EBEE"
+};
+
 const Content = (props) => {
-    
+
     return (
-        <div className={styles.cont}>
-        <div className="row">
-            {/* Accounts */}
-            <div className="col-md-2">
-                <Accounts />
-            </div>
-            {/* Main content */}
-            <div className="col-md-8">
-                <div className={styles.feed}>
-                    <Feed />
+        <div style={contentStyle}>
+            <div className="row">
+                {/* Accounts */}
+                <div className="col-md-2">
+                    <Accounts />
+                </div>
+                {/* Main content */}
+                <div className="col-md-7">
+                    <div className={styles.feed}>
+                        <Feed />
+                    </div>
+                </div>
+                {/* Notifications and messages */}
+                <div className="col-md-4">
+
                 </div>
             </div>
-            {/* Notifications and messages */}
-            <div className="col-md-2">
-
-            </div>
-        </div>
         </div>
     );
 }

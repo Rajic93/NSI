@@ -168,15 +168,19 @@ export function getFeed(token) {
 
 export function initializeFacebook(permissionsList) {
     return function (dispatch) {
+        alert("0");
         return initFacebookSdk('161075037850261')
             .then(() => {
                 dispatch(getNewTokenRequest());
+                alert("1");
                 return getShortLivedTokenFromFb(permissionsList);
             }).then((token) => {
                 dispatch(getNewTokenSuccess(token));
+                alert("2");
                 return Promise.resolve(token);
             }).catch((msg) => {
                 dispatch(getNewTokenFailure(msg));
+                alert("3");
                 return Promise.reject(msg);
             });;
 

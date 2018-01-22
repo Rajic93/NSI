@@ -5,6 +5,10 @@ import axios from "axios";
 import style from '../Content.css';
 import { FacebookPostAuthor, FacebookPostComment, FacebookPostImage } from "../../../../Facebook/components/FacebookFeed";
 
+var panelMarginStyle = {
+    margins: "15px",
+    padding: "15px"
+};
 
 const FeedItem = (props) => {
     let post = props.post;
@@ -63,37 +67,39 @@ const FeedItem = (props) => {
         let comments = post.comments;
         return (
             <div className='panel panel-default'>
-                <div className='pane-body'>
-                    <table className={style.frame}>
-                        <tbody>
-                            <tr className={style['avatar-container']}>
-                                <td>
-                                    <img className={style['avatar']} src={avatar} />
-                                </td>
-                            </tr>
-                            <tr className={style['img-main']}>
-                                <td>
-                                    <img className="img-responsive" onDoubleClick={like} src={img} />
-                                </td>
-                            </tr>
-                            <tr className={style['actions']}>
-                                <td>
-                                    <img id='like' className={style.heart} onClick={like} src='https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png' />
-                                    <span id='num'>{likes} like{likes === 1 ? '' : 's'}</span>
-                                </td>
-                            </tr>
-                            <tr className={style['comments']}>
-                                <td>
+                <div style={panelMarginStyle}>
+                    <div className='pane-body'>
+                        <table className={style.frame}>
+                            <tbody>
+                                <tr className={style['avatar-container']}>
+                                    <td>
+                                        <img className={style['avatar']} src={avatar} />
+                                    </td>
+                                </tr>
+                                <tr className={style['img-main']}>
+                                    <td>
+                                        <img className="img-responsive" onDoubleClick={like} src={img} />
+                                    </td>
+                                </tr>
+                                <tr className={style['actions']}>
+                                    <td>
+                                        <img id='like' className={style.heart} onClick={like} src='https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png' />
+                                        <span id='num'>{likes} like{likes === 1 ? '' : 's'}</span>
+                                    </td>
+                                </tr>
+                                <tr className={style['comments']}>
+                                    <td>
 
-                                </td>
-                            </tr>
-                            {/* <tr className={style['comment-add']}>
+                                    </td>
+                                </tr>
+                                {/* <tr className={style['comment-add']}>
                                 <td>
 
                                 </td>
                             </tr> */}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         )
@@ -102,13 +108,15 @@ const FeedItem = (props) => {
     const renderFB = (post) => {
         return (
             <div className='panel panel-default'>
-                <FacebookPostAuthor
-                    name={post.from.name}
-                    profilePicture={post.authorPicture}
-                    date={post.created_time}>
-                </FacebookPostAuthor>
-                <FacebookPostComment post={post}></FacebookPostComment>
-                <FacebookPostImage images={post.images}></FacebookPostImage>
+                <div style={panelMarginStyle}>
+                    <FacebookPostAuthor
+                        name={post.from.name}
+                        profilePicture={post.authorPicture}
+                        date={post.created_time}>
+                    </FacebookPostAuthor>
+                    <FacebookPostComment post={post}></FacebookPostComment>
+                    <FacebookPostImage images={post.images}></FacebookPostImage>
+                </div>
             </div>
         );
     };

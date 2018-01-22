@@ -49,6 +49,7 @@ class Facebook extends Component {
     return (
       <div>
         <img src="http://localhost:10000/fb-logo.png" onClick={this.handleConnectClick} style={styleLogo}/>
+        <div>Connected</div>
       </div >
     );
   }

@@ -31,10 +31,9 @@ class Feed extends React.Component {
 
         // });
 
-        let aa = this.props.initFacebook();
-        console.log(aa);
-
-
+        alert("Feed mounting");
+        this.props.initFacebook();
+    
     }
 
     showFeed() {
@@ -83,7 +82,7 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(updateContent(data))
         },
         initFacebook: () => {
-            dispatch(initializeFacebook('publish_actions,user_posts,user_photos'));
+            dispatch(generateLongLivedToken('publish_actions,user_posts,user_photos'));
         }
     };
 }

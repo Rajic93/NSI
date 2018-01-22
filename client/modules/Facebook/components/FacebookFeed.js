@@ -10,15 +10,16 @@ var postStyle = {
 };
 
 var avatar = {
-    width: "40px",
-    height: "40px",
-    clipPath: "circle(15px at center)"
+    width: "70px",
+    height: "70px",
+    clipPath: "circle(30px at center)"
 }
 
 var imgMain = {
     display: "inline-block",
     width: "100%",
-    minHeight: "300px",
+
+    maxHeight: "450px",
     padding: "2px"
 }
 
@@ -71,6 +72,7 @@ export function FacebookFeed(props) {
 
     const feed = posts.map((post, i) =>
         <li key={i} style={postStyle}>
+
             <FacebookPostAuthor
                 name={post.from.name}
                 profilePicture={post.authorPicture}
@@ -78,6 +80,7 @@ export function FacebookFeed(props) {
             </FacebookPostAuthor>
             <FacebookPostComment post={post}></FacebookPostComment>
             <FacebookPostImage images={post.images}></FacebookPostImage>
+
         </li>
     );
 
