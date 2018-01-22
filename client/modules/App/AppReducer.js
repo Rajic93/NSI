@@ -1,5 +1,5 @@
 // Import Actions
-import { ADD_ACCOUNT, ADD_POST, UPDATE_CONTENT } from './AppActions';
+import { ADD_ACCOUNT, ADD_POST, UPDATE_CONTENT, updateContent } from './AppActions';
 
 // Initial State
 const initialState = {
@@ -20,13 +20,9 @@ const AppReducer = (state = initialState, action) => {
         posts: updatedPosts
       }
     case UPDATE_CONTENT:
-      let updatedContent = state.posts.concat(action.payload);
-      for (let i = 0; i < updatedContent.length; i++) {
-        for (let j = i + 1; j < updatedContent.length; j++) {
-          if (updatedContent[i] === updatedContent[j]) {
-            updatedContent.splice(j--, 1);
-          }
-        }
+      return {
+        posts: JSON.parse(JSON.stringify(action.payload)),
+        accounts: JSON.parse(JSON.stringify(state.accounts))
       }
       return {
         posts: updatedContent
