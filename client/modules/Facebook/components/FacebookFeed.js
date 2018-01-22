@@ -31,10 +31,14 @@ var nameStyle = {
     color: "blue"
 };
 
+var authorStyle = {
+    display: "flex"
+};
+
 export function FacebookPostAuthor(props) {
     var date = new Date(props.date).toLocaleTimeString();
     return (
-        <div>
+        <div style={authorStyle}>
             <img src={props.profilePicture.url} style={avatar} />
             <div>
                 <div style={nameStyle}>{props.name}</div>
