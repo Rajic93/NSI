@@ -35,35 +35,9 @@ class Feed extends React.Component {
 
     }
 
-    showFeed() {
-        axios.get('http://localhost:10000/inst/feed', {
-            withCredentials: true
-        }).then((response) => {
-            let instaData = response.data;
-            //this.props.updateFeed(response.data);
-
-            //get facebook data
-            getWrappedFacebookFeed(this.props.fbToken).then((fbData) => {
-                console.log(fbData);
-                let combined = instaData.concat(fbData);
-                this.props.updateFeed(combined);
-            }).catch((err)=>{
-                alert("Facebook not connected");
-                //update only with instagram data
-                this.props.updateFeed(instaData);
-            });
-
-        }).catch((err) => {
-            console.log(err);
-        });
-
-
-    }
-
     render() {
         return (
             <div className={styles['scrollable']}>
-                <button onClick={() => this.showFeed()}> Refresh </button>
                 {this.props.posts.map((post, index) =>
                     <FeedItem key={index} type={post.type} post={post.data} />
                 )}
