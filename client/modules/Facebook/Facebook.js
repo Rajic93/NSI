@@ -8,9 +8,9 @@ import { FacebookConnected } from './components/FacebookConnected';
 import { FacebookFeed } from './components/FacebookFeed';
 
 
-var styleLogo={
-  width:"75px",
-  height:"75px"
+var styleLogo = {
+  width: "75px",
+  height: "75px"
 };
 
 
@@ -37,6 +37,8 @@ class Facebook extends Component {
   }
 
 
+
+
   render() {
     let connectOption = null;
 
@@ -48,8 +50,8 @@ class Facebook extends Component {
 
     return (
       <div>
-        <img src="http://localhost:10000/fb-logo.png" onClick={this.handleConnectClick} style={styleLogo}/>
-        <div>Connected</div>
+        <img src="http://localhost:10000/fb-logo.png" onClick={this.handleConnectClick} style={styleLogo} />
+        <div>{this.props.isTokenReady ? "Connected" : "Not connected"}</div>
       </div >
     );
   }

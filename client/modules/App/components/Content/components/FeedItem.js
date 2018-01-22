@@ -10,6 +10,10 @@ var panelMarginStyle = {
     padding: "15px"
 };
 
+var fullNameStyle = {
+    color: "blue"
+};
+
 const FeedItem = (props) => {
     let post = props.post;
     let type = props.type;
@@ -65,6 +69,7 @@ const FeedItem = (props) => {
         let img = post.img;
         let likes = post.likes;
         let comments = post.comments;
+        let fullName = post.fullName;
         return (
             <div className='panel panel-default'>
                 <div style={panelMarginStyle}>
@@ -74,6 +79,7 @@ const FeedItem = (props) => {
                                 <tr className={style['avatar-container']}>
                                     <td>
                                         <img className={style['avatar']} src={avatar} />
+                                        <span style={fullNameStyle}>{fullName}</span>
                                     </td>
                                 </tr>
                                 <tr className={style['img-main']}>

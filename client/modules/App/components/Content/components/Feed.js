@@ -31,7 +31,6 @@ class Feed extends React.Component {
 
         // });
 
-        alert("Feed mounting");
         this.props.initFacebook();
     
     }

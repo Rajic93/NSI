@@ -22,11 +22,11 @@ export function redirect(req, res) {
     //no errors
     let code = req.query.code;
     InstaModel.authenticate(code, (data) => {
-        
+
         let id = req.cookies.id;
-      
+
         UsersController.connect(id, data, 'instagram', (status) => {
-            
+
             switch (status) {
                 case 500:
                     res.status(500).send(err);
@@ -35,7 +35,7 @@ export function redirect(req, res) {
                 case 404:
                     res.status(404).send('invalid credentials');
                     res.end();
-                    break;              
+                    break;
                 default:
                     res.status(200);
                     res.redirect("http://localhost:10000/feed");
@@ -64,13 +64,13 @@ export function getFeed(req, res) {
             res.end();
             return;
         }
-        
+
         if (!access_token) {
             res.status(404).send('No user with specified id.');
             res.end();
             return;
         }
-        
+
         InstaModel.feed(access_token, (error, data) => {
 
             if (error) {
@@ -89,10 +89,12 @@ const Format = (response) => {
     let data = response.data;
     let formatedData = []
     data.forEach(object => {
+        console.log(object.user);
         let formatedObject = {
             type: 'instagram',
             data: {
                 id: object.id,
+                fullName: object.user.full_name,
                 avatar: object.user.profile_picture,
                 img: object.images.standard_resolution.url,
                 comments: object.comments.count,
@@ -108,7 +110,7 @@ export function like(req, res) {
 
     let mediaId = req.body.mediaId;
     let id = req.cookies.id;
-    
+
     UsersController.getInstaCode(id, (error, access_token) => {
 
         if (error) {
@@ -116,7 +118,7 @@ export function like(req, res) {
             res.end();
             return;
         }
-        
+
         if (access_token === undefined) {
             res.status(404).send('No user with specified id.');
             res.end();
@@ -124,7 +126,7 @@ export function like(req, res) {
         }
 
         InstaModel.like(mediaId, access_token, (error, data) => {
-            
+
             if (error) {
                 res.status(404).send(error);
                 res.end();
@@ -141,7 +143,7 @@ export function dislike(req, res) {
 
     let mediaId = req.body.mediaId;
     let id = req.cookies.id;
-    
+
     UsersController.getInstaCode(id, (error, access_token) => {
 
         if (error) {
@@ -149,15 +151,15 @@ export function dislike(req, res) {
             res.end();
             return;
         }
-        
+
         if (access_token === undefined) {
             res.status(404).send('No user with specified id.');
             res.end();
             return;
         }
-        
+
         InstaModel.dislike(mediaId, access_token, (error, data) => {
-            
+
             if (error) {
                 res.status(404).send(error);
                 res.end();
