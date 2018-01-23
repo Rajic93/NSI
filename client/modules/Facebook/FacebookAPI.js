@@ -63,7 +63,7 @@ export function getLongLivedToken(shortLivedAccessToken) {
 export function getFacebookPosts(token) {
     return new Promise((resolve, reject) => {
         FB.api(
-            "/me/posts",
+            "/me/feed",
             function (response) {
                 if (response && !response.error) {
                     resolve(response.data);
