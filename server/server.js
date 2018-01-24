@@ -36,6 +36,7 @@ import routes from '../client/routes';
 import { fetchComponentData } from './util/fetchData';
 import posts from './routes/post.routes';
 import insta from './routes/instagram.routes';
+import fb from './routes/facebook.routes';
 import user from './routes/users.routes';
 import serverConfig from './config';
 
@@ -62,6 +63,7 @@ app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../dist/client')));
 app.use('/api', posts);
 app.use('/inst', insta);
+app.use('/fb',fb);
 app.use('/user', user);
 
 // Render Initial HTML

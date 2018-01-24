@@ -3,7 +3,16 @@ import axios from "axios";
 
 // Import styles
 import style from '../Content.css';
+import { FacebookPostAuthor, FacebookPostComment, FacebookPostImage } from "../../../../Facebook/components/FacebookFeed";
 
+var panelMarginStyle = {
+    margins: "15px",
+    padding: "15px"
+};
+
+var fullNameStyle = {
+    color: "blue"
+};
 
 const FeedItem = (props) => {
     let post = props.post;
@@ -40,12 +49,12 @@ const FeedItem = (props) => {
     }
 
     const updateLikes = (increase) => {
-        
+
         let img = document.getElementById('like');
         if (increase) {
-            post.likes++;  
+            post.likes++;
             isLiked = true;
-            img.src = 'http://wfarm4.dataknet.com/static/resources/icons/set105/13577682.png';          
+            img.src = 'http://wfarm4.dataknet.com/static/resources/icons/set105/13577682.png';
         } else {
             post.likes--;
             isLiked = false;
@@ -60,46 +69,62 @@ const FeedItem = (props) => {
         let img = post.img;
         let likes = post.likes;
         let comments = post.comments;
+        let fullName = post.fullName;
         return (
             <div className='panel panel-default'>
-                <div className='pane-body'>
-                    <table className={style.frame}>
-                        <tbody>
-                            <tr className={style['avatar-container']}>
-                                <td>
-                                    <img className={style['avatar']} src={avatar}/>
-                                </td>
-                            </tr>
-                            <tr className={style['img-main']}>
-                                <td>
-                                    <img className="img-responsive" onDoubleClick={like} src={img} />
-                                </td>
-                            </tr>
-                            <tr className={style['actions']}>
-                                <td>
-                                    <img id='like' className={style.heart} onClick={like} src='https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png'/>
-                                    <span id='num'>{likes} like{likes === 1 ? '' : 's'}</span>
-                                </td>
-                            </tr>
-                            <tr className={style['comments']}>
-                                <td>
-                                    
-                                </td>
-                            </tr>
-                            {/* <tr className={style['comment-add']}>
+                <div style={panelMarginStyle}>
+                    <div className='pane-body'>
+                        <table className={style.frame}>
+                            <tbody>
+                                <tr className={style['avatar-container']}>
+                                    <td>
+                                        <img className={style['avatar']} src={avatar} />
+                                        <span style={fullNameStyle}>{fullName}</span>
+                                    </td>
+                                </tr>
+                                <tr className={style['img-main']}>
+                                    <td>
+                                        <img className="img-responsive" onDoubleClick={like} src={img} />
+                                    </td>
+                                </tr>
+                                <tr className={style['actions']}>
+                                    <td>
+                                        <img id='like' className={style.heart} onClick={like} src='https://cdn2.iconfinder.com/data/icons/web-part-1/32/heart-empty-256.png' />
+                                        <span id='num'>{likes} like{likes === 1 ? '' : 's'}</span>
+                                    </td>
+                                </tr>
+                                <tr className={style['comments']}>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                {/* <tr className={style['comment-add']}>
                                 <td>
 
                                 </td>
                             </tr> */}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         )
     };
 
     const renderFB = (post) => {
-        return;
+        return (
+            <div className='panel panel-default'>
+                <div style={panelMarginStyle}>
+                    <FacebookPostAuthor
+                        name={post.from.name}
+                        profilePicture={post.authorPicture}
+                        date={post.created_time}>
+                    </FacebookPostAuthor>
+                    <FacebookPostComment post={post}></FacebookPostComment>
+                    <FacebookPostImage images={post.images}></FacebookPostImage>
+                </div>
+            </div>
+        );
     };
 
     switch (type) {

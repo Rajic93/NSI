@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { Link } from "react-router";
+import axios from "axios";
 
 import Instagram from "../../../Instagram/Instagram";
+
 
 // Import Styles
 import styles from "./Accounts.css";
@@ -11,6 +14,7 @@ import { ADD_ACCOUNT, addAccount } from "../../AppActions";
 
 // Import Selectors
 import { getAccounts } from "../../AppReducer";
+import Facebook from '../../../Facebook/Facebook';
 
 class Accounts extends React.Component {
 
@@ -22,16 +26,17 @@ class Accounts extends React.Component {
 
     componentWillMount() {
         console.log('will mount');
-        const getAccounts = () => {
-            axios.get('http://localhost:10000/user/account').then((response) => {
+        const getAccounts = function(){
+            axios.get('http://localhost:10000/user/accounts').then((response) => {
                 console.log(response.data);
+                console.log('mounted');
                 response.data.forEach(account => {
                     this.props.addAccount(account);
                 });
             }).catch((error) => {
                 console.log(error);
             });
-        }
+        };
     }
 
     filter(str, li) {
@@ -77,10 +82,9 @@ class Accounts extends React.Component {
         return (
             <div className={styles.filters}>
                 <ul id="accounts">
-                    <li><span className="glyphicon glyphicon-random" aria-hidden="true" onClick={this.filter.bind(this, "MIX")} ></span></li>
                     <Instagram />
+                    <Facebook />
                 </ul>
-                <img src="#" className={styles.add} onClick={this.addAccount.bind(this)} />
             </div>
         );
     }
